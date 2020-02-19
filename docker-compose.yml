@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+
+  exchange-app:
+    build: ./
+    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py loaddata exchange/fixtures/providers.yaml && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./exchange:/exchange
+      
+  redis:
+    image: redis:5-buster
+    restart: always
+    ports:
+      - "6379:6379/tcp"
+    environment:
+      - TZ=UTC
+      
